@@ -80,13 +80,13 @@ public class SenseApi {
         }
         return null;
     }
-    SensorData getCurrentSensorData(int sensorType){
+    public SensorData getCurrentSensorData(int sensorType){
         for(SensorData sensorData:getAllCurrentSensorData()){
             if(sensorData.getSensorType()==sensorType)return sensorData;
         }
         return null;
     }
-    ArrayList<SensorData> getAllCurrentSensorData(){
+    public ArrayList<SensorData> getAllCurrentSensorData(){
         try {
             URL apiURL = new URL("https://api.hello.is/v1/room/current?temp_unit="+ tempUnit);
             HttpsURLConnection httpsURLConnection = (HttpsURLConnection) apiURL.openConnection();
@@ -112,7 +112,7 @@ public class SenseApi {
         }
         return null;
     }
-    TimelineData getTimelineData(int month,int day, int year){
+    public TimelineData getTimelineData(int month,int day, int year){
         try {
             URL apiURL = new URL("https://api.hello.is/v2/timeline/"+year+"-"+month+"-"+day);
             HttpsURLConnection httpsURLConnection = (HttpsURLConnection) apiURL.openConnection();

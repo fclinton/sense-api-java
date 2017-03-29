@@ -102,11 +102,33 @@ public class SenseApi {
                 sb.append((char) c);
             String response = sb.toString();
             JSONObject jsonObject = new JSONObject(response);
-            ArrayList<SensorData> sensorDataArrayList = new ArrayList<SensorData>();
+            ArrayList<SensorData> sensorDataArrayList = new ArrayList<>();
             for(int i=0;i<5;i++){
                 sensorDataArrayList.add(new SensorData(jsonObject.getJSONObject(SensorData.getRequestName(i)),i));
             }
             return sensorDataArrayList;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    TimelineData getTimelineData(int month,int day, int year){
+        try {
+            URL apiURL = new URL("https://api.hello.is/v2/timeline/"+year+"-"+month+"-"+day);
+            HttpsURLConnection httpsURLConnection = (HttpsURLConnection) apiURL.openConnection();
+            //Set the headers
+            httpsURLConnection.setRequestProperty("X-Client-Version", "1.4.4.4");
+            httpsURLConnection.setRequestProperty("Authorization", "Bearer "+getAccessToken());
+            httpsURLConnection.setRequestProperty("User-Agent", "Sense/1.4.4.4 Platform/iOS OS/9.3.2");
+            httpsURLConnection.setRequestMethod("GET");
+            httpsURLConnection.setDoOutput(true);
+            Reader in = new BufferedReader(new InputStreamReader(httpsURLConnection.getInputStream(), "UTF-8"));
+            StringBuilder sb = new StringBuilder();
+            for (int c; (c = in.read()) >= 0; )
+                sb.append((char) c);
+            String response = sb.toString();
+            JSONObject jsonObject = new JSONObject(response);
+            return new TimelineData(jsonObject);
         } catch (IOException e) {
             e.printStackTrace();
         }
